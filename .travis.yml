@@ -39,7 +39,7 @@ deploy:
     secure: XCpKoBUC2yW39qU3fhlA9dycb5JS+E+7xE5k9nQSdIEsScsxC574DU3EE4OYECkVq0vHIa7gRz39M80udlVDmtx3Q61v6QE7WO3jGxqlXuJUoM48l0sIbgv8bJzawCIT1GL1XD9qYCNLiWt9XESLAY1mKesNwU8BG3E/2miLnD6Yji6DnpcTvygZ6ftyVNzU/sMDIZPCXNpiRYvLOpmX0BUVie1GNGFvrQTLI422Qqb97dDKiZb04WQ31VZLNNliCl5SYpInvf/WP6V7MFDf1grVWfe3dPDeNoITeMILxJTVGa2MrlMVMK3q3TMfIGI0+k9wNOoG+l09IwjA1g8qCQS4sGmAEM+Izwt53hHAgqEYg69AOlN7hY6IUZjNo5xdZli3YpF9gdQ7DfJkryZOPln4xjPbo6KZDvsrPYly0YEU57+wY3pd6uAGoOG4XbDMmtzvYcZgTH+HayXvrHw1p0BOz7+b6vaV8MGqTcSNXVcjlbPZ+zy42APbyeD2ngCNcpdCK2/GtRNQEknysgeo3neYdN9KfGn36icSrvwR+qJbdS6A38idnNuDm1/lmwL0M+WRcQCwQy+mvKnT0Ik33xlUSee9qLrQV0Iy/6ugXgWvXBnmfIMLugLvAU2VBsP4r7PcZ1AZlvVTEkQE2KnzT9aMD9P4PnM7ozw0rR4Zdgk=
   on:
     tags: true
-    repo: djanta/djantaio-tools-bump
+    repo: djantaio/travisci-npm-deploy
 
 after_deploy:
   - echo "Running after deploy step ..."
