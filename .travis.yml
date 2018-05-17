@@ -17,6 +17,13 @@ before_install:
   - echo "https://$GH_TOKEN:@github.com" > .git/credentials
   - npm i -g npm-cli-login
 
+  - echo "Email= $NPM_EMAIL"
+  - echo "User= $NPM_USER"
+  - echo "Password= $NPM_PWD"
+  - echo "===================================="
+  - npm-cli-login -u $NPM_USER -p $NPM_PWD -e npmjs@djanta.io
+
+
 install:
   - echo "Installing ..."
 
@@ -29,11 +36,6 @@ after_success:
 
 before_deploy:
   - echo "Running before deploy step ..."
-  - echo "Email= $NPM_EMAIL"
-  - echo "User= $NPM_USER"
-  - echo "Password= $NPM_PWD"
-  - echo "===================================="
-  - npm-cli-login -u $NPM_USER -p $NPM_PWD -e npmjs@djanta.io
 
 deploy:
   provider: npm
