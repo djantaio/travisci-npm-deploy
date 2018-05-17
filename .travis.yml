@@ -2,63 +2,46 @@ sudo: false
 dist: trusty
 language: node_js
 node_js:
-  - '7'
-  - '6'
-  - '5'
-  - '4'
-
+- '7'
+- '6'
+- '5'
+- '4'
 before_install:
-  # Parameters used during release
   - git config user.name "$GH_USER"
   - git config user.email "$GH_USER_EMAIL"
-
-  # setup https authentication credentials, used by ./mvnw release:prepare
   - git config credential.helper "store --file=.git/credentials"
   - echo "https://$GH_TOKEN:@github.com" > .git/credentials
   - npm i -g npm-cli-login
-
   - echo "Email= $NPM_EMAIL"
   - echo "User= $NPM_USER"
   - echo "Password= $NPM_PWD"
   - echo "===================================="
-  - npm-cli-login -u $NPM_USER -p $NPM_PWD -e npmjs@djanta.io
-
-
+  - npm-cli-login -u $NPM_USER -p $NPM_PWD -e $NPM_EMAIL
 install:
   - echo "Installing ..."
-
 script:
   - echo "Npm deploy email= $NPM_EMAIL"
   - echo "No npm test needed!"
-
 after_success:
   - echo "Running after success step ..."
-
 before_deploy:
   - echo "Running before deploy step ..."
-
 deploy:
   provider: npm
   skip_cleanup: true
-  email: npmjs@djanta.io
+  email: $NPM_EMAIL
   api_key:
     secure: XCpKoBUC2yW39qU3fhlA9dycb5JS+E+7xE5k9nQSdIEsScsxC574DU3EE4OYECkVq0vHIa7gRz39M80udlVDmtx3Q61v6QE7WO3jGxqlXuJUoM48l0sIbgv8bJzawCIT1GL1XD9qYCNLiWt9XESLAY1mKesNwU8BG3E/2miLnD6Yji6DnpcTvygZ6ftyVNzU/sMDIZPCXNpiRYvLOpmX0BUVie1GNGFvrQTLI422Qqb97dDKiZb04WQ31VZLNNliCl5SYpInvf/WP6V7MFDf1grVWfe3dPDeNoITeMILxJTVGa2MrlMVMK3q3TMfIGI0+k9wNOoG+l09IwjA1g8qCQS4sGmAEM+Izwt53hHAgqEYg69AOlN7hY6IUZjNo5xdZli3YpF9gdQ7DfJkryZOPln4xjPbo6KZDvsrPYly0YEU57+wY3pd6uAGoOG4XbDMmtzvYcZgTH+HayXvrHw1p0BOz7+b6vaV8MGqTcSNXVcjlbPZ+zy42APbyeD2ngCNcpdCK2/GtRNQEknysgeo3neYdN9KfGn36icSrvwR+qJbdS6A38idnNuDm1/lmwL0M+WRcQCwQy+mvKnT0Ik33xlUSee9qLrQV0Iy/6ugXgWvXBnmfIMLugLvAU2VBsP4r7PcZ1AZlvVTEkQE2KnzT9aMD9P4PnM7ozw0rR4Zdgk=
   on:
     tags: true
     repo: djantaio/travisci-npm-deploy
-
 after_deploy:
   - echo "Running after deploy step ..."
   - echo "registry.npmjs.org/:_authToken=/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-  - cat "~/.npmrc"
-   - echo "==================================="
+  - cat "~/.npmrc" - echo "==================================="
   - npm config ls -l
-
 env:
   global:
-    #Encrypted "NPM_EMAIL"
-    secure: toj5LxHjk43JY9xVjWcnf2a2PQvoJak1BPOnGvxWMIwod+Z/kDpQGWvYTNNI6n7Tt0ZnxUx5t1K7aP13qf7cqldCDWAWBtwWC0+bbS3SLHU2k+R4qR0qcMkp7LnpoC6ErgX2TfLurXwhiJmeb8hf8T7dUchAmJG4d5nNGK/XtlM5buQ2+N0V3Dd2S2YOF/+yB8HljCWE2n2HPCHYgUOBqpESxIApB25wGtcWOjwK5Z+g6hmUxhH5KsChGBMtv/9ymil0zlrVIZbbtnnj7OG2mzVybnDtX+D7sF3Q5k27itVQ3Lxk1YAuP3tQ01rOIqHVZnlBi21nEAkIAqfmIzR0o+Iw/XGmHLfsnAfEt/CnrqgxFecyBMxL6mHKSrchipOKj2cWvF1eOALpOajWZkdQ/VjcJQdVuBcm3Uh6JUJcYD345XCXGE4xJGBY/bW9Y8v5BCv7OzCDcafupA81xy058DBfk/AJCjqNrVcBcGLSWD6Es4AXOwfmqx0+E/vIlWT/PowymdqTLg27H17LHKkhyO7b6+yrVOA4om6biu8+6aSx4VmJS4GvCZcxtRjZLHXvlIVGSjGcxDaKVSG48a/stJj2VWN1A+TWbzhVrGUYAqsqxooJkrDjvmy0bGF+w3vU7+D60wupoV1f0n8bJ78L29vuOVcWmpSzife0O7gktbo=
-    #Encrypted "NPM_USER"
-    secure: 4IndnB/kye/FG8GOZ8Yyuy/isAOj4duqv97HZIaNHH00fZr38lBc5Hj/8oZ9kl2NScv8RQR37aBVltrdZCU23Lkam8JOWJQQgAFYziubN/0BM4CHMiHP8puh5rcmlv6a7QmsipeASlZ8eDOQJ/76ou1cofipIDeza8YSNX1Mwp0qvlgGh2V3mebYKVIw0V8VxCp2V2wVXCjbcd/3r6tuvYA9qLxMPeR6UxAhZam4Figa1au5mo5iSYtWIkYuys3947/XjSRhR6F4taw9s6jJ4l+s2vy6TLzE7QPaKJbTlJdm5l+Pul2RuZ/MGt3P+HMfp5ipulCNX/uO10R3tfHZ6lOKpcxYuGD6W9MvbaXMVlvSF43IpEB4T/csN7LNkGhajFeoNG/dM1Trh29wbL9ZojtNDCg30O21vSTDnUCqMbKNTFJBazsmFg7rsAailyF9iD0kuukKo5gcPRag0Ka6wGLc1J5lmws7VMmdDldwNguTXESU3AhGUGIWG0v/bCxjchcNdYDHwVYj5Zh1QwsZ9/nXHf3eMJQwYUAYwFBrCMqZoJkh0OXiDDGt0VTSnSQVoUa1c25BamA5CsXcupBEqtlXpRgZurTTJuR9hBo80aAXXDZWmftQkSLwl5CUMc01cTzaXISaME86j7Xp5xvBmCnY39LwmvhMfTIX9dLWX3o=
-    #Encrypted "NPM_PWD"
-    secure: 9OkXIbCAU9RXG0OKsjHT9n+PWRuPQ/lpgOfU4ZcRdN9lccf8ZI4Ww1lM0XTZ90ch7K+SdDdKNQfzk7GSZxdsUShcE7QYZj3cMNGQPDyH8Fk7h4oYCsrz43RNmsmS2YqHiZ/Gcz7VgzwT2xC/3CC4mkfDmaif6nueSY4TqKuE9gBVx7M9MCQvj6xgVUF2FMaiFFz9jzY4/v75Ax5RvvygdOfRe4ieHjDEXYP47bm44DlgUHwpQ8GM6JrRpLTQVG0WmmUp685YvmvbD8Cb98WHvbGgj0btwKv+fUqU/NSXmPgx0wrcB3R0/7UOsVl7iBKP8PyB7besI+RSPAIbZdAu0Sz4/CNTnFRr+nI8t1gH3BNgi3yBB66YVx6rIg6olHY2dYCH0bV0nzG5W6OL1i72SgluFTtQO7sFmokmn4hPkeokhFOlGj79kWUKc2ActLSs2b+5m8d3IqaXyIRfudox+4G+VpkTh/n9Yr9Svqfe5NjFkFsss2i9QJLWESUyCybDd5Hj3a7n4TOJ8XuC0ZGuoapfjw/WhbmBXBhOlK4rwjwet2wmyI96bii2W2mp6B39a6E4RNp7pZlPPM9Ocf15X8zsUfuMpKX5E0xDznLoYwXAw4u/FAoW24yZogpZDvIgpUHzlsdHYXIiZixClss/354imdpknEFDVcNVnKOgX2U=
+  - secure: 0P6fFHMISpAHYWQ34nIf/uRgyQWqhXMpHS7F7M/hGKwRv1lZ7euMQNmgIhMPEAyiJmSlTfvk8EzE3PfY5Qza5CLZuc5/9onngMsWbi86Ui/1JB/01hA6xzcP5ZG8kpgXfzul4yEmhZob6I7FoDvTCHIPT+Twc1oSgNIsj0BliPUwdOT6x9H3g6MQCTJ+4JdR8rSnNPZhOZvh4+K9WEpjJpNh/LiCAAybJZ07k+8qVTSKe9lZDDHtPhlCgm9co5VcQXObxXuv9TcN5fCw7TNRBwP6NifG8/uxjY1aG0mm7ICytvypNGm8rDTy+vRddOM+0QEv6gCWNJtRafqCdcDhwOvq/TpVlvNc8S6TkCZ6a6TrKPeD5InuEgyjdmTjfxFWJAOP4o/N7V50Y0sUrk2tsC8dKxA0FslnE6ffNlLAAt3723lB8kegxE4yTjapvxBnJh1Hj/9QN1W3/bO/i/VuxazOX+0uSIT+/KH4eNiC8j1WnoqT1n32Mix+VsO4HJIabs8/y8hGxLLBMZDA73qzw0nhPQ37M+lkc6EvfopvZBbSQ1q+7H8Obg9IVf5i/zf/HjLsvDINoZRD9B6qdj2rKRRDLBstnfHlAzkPMIHalpm7VVoCMNdofkv3bMZ4f8k5sZqBboI4HB8/aIvJQtsxvvu8I4N3nucPxBAfuWGaHDM=
+  - secure: GG80KUiANKT2G+COoan/qsaWQOfKqtfryulAY5JUPi/ZTv1+oTaIAN550WWAziAUF1QRiM99GOGRcRCpHDD5tK0m9RxvLzA6Kmy7bxDSjp6UDXb/orXzqRMOAy6sDEP4tkFAVCVwbYWjfa8Z09A/UR0i0ue4GliwVO+sKJ933S+0yWs2DajOLqG1H0FoEo+zmCPHdsruJsyBvOAjAk7nymVS/p9CCS7PcBNpADbSjxZqMP+H69eBFaJhMOcsGJcqSeb49VnJ8eF0zbq6bLwHsueXWVmoIrnZEqQ77elrc94VsiUsV2ze6u6bWLlpRVILihuPnQR6BJ/wZy1/KhC65j2j+dMQSOtSOeNtri91sjUMaWttPfmkYTy4HUoJRmi79umKJZI1TumhCcYbQ3+lYdBzOK6AFA27rePwDUXtPL5JSX5AaX5RkZOk6x+mQ2ZF+DGGwwg3y5Wk8lpaa8He0TlP628qvSA/n7UJKHjIQ9H0CWXW5kitR1s6WcVkVh7QUExWeAg+tFbphnw4GsJKMPTRjyMYu1sHP20iSFW1B6CLrlCVc1eMASulqXsRewW44HIUMc03HPo0TPHgLBqPdrdDbRiSyzm1SL8gKE3S4F1k5UWRjb9tE+73yg0O59zPBNXeo6DdXG8BH/yrJCK3fHad1OrfQt9fvkrsDuaK634=
+  - secure: wLVIP0pSjG/yYmqwgsIUCAwcjYEDR0vLN3k71g7zBlI/7zGMY1rXR538vAcPtq863pgjJ8tRHipRRpdf2Kv7XE/oU01EKCdlWRLYz7SLDrjSmBbgoxeHUaKxykRLWzEpu1IQXPWp8c2qtMegUS0ZBZCJwJy+0F2i2xR+gxMG7rXjgVhCb6615GVsJbSgYKo/DPbIRu9/FqlnBpHW8NX2ium48LVGfcWy3Wylc4KMnmYej4bQVwrRmziYNd97yMrQJ181ZltA4oKfQbSOXJ0SNvKbrqpnUqnhIPAw0BQQMX3WuwwCCJ5kNKdsBye2QQdIU6cfdyq/fZ7/Z+GInvSz3C4fXwad7IcVnalufEsxjTyReTiGZ8Yky9fJZW+vHS64j1WqJCJvu4m8PKczsGZsk8XD74qlTG8N4qvCwHjwG1py/2NAB51IsGkiBZ8+lsOe62hwAGHA9am7QlnbKOvK58XJOWwsuh+cJJUqHE/vEVUEKOp+mN1eXbqkzeMLkqSQyzubfKBLAffOwtRIwlY3xka7yz06BYXrtlVzkmKOWyULRJhgnC5X1B7tly85T2Jo8wMMjY0Youkdj9VPfUjqmuFX2tiDCL7jJgC2c9Swy/Fx18933qLnZxE+0YoznwR02TFZro93E3iCmNDtaOJ7rh9zCmVMA+/LsH9+19r9nfs=
