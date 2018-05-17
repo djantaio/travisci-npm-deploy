@@ -15,6 +15,8 @@ before_install:
   # setup https authentication credentials, used by ./mvnw release:prepare
   - git config credential.helper "store --file=.git/credentials"
   - echo "https://$GH_TOKEN:@github.com" > .git/credentials
+  - npm i -g npm-cli-login
+  - npm-cli-login --help #Verify if the command has been installed
 
 install:
   - echo "Installing ..."
@@ -28,13 +30,14 @@ after_success:
 
 before_deploy:
   - echo "Running before deploy step ..."
+  - npm-cli-login -u $NPM_USER -p $NPM_PWD -e $NPM_EMAIL
 
 deploy:
   provider: npm
   skip_cleanup: true
   email: $NPM_EMAIL
   api_key:
-    secure: TPABHmI0IMJYCPu4akjB74a2g8WoRoMUbkKrFZvwgLHx48CzFBkead2TOgAy+H+Ig7oTmndtp+Ulf6CgTtZpek3ygaRdQhETN3UdXdTPiZECwpryZ79b+RosnOGH92skcsXWP0beDLXc0Vz2QqfWK76o9XbrBU4WJpmiG1Wl+EH7EBfHymNBxYS6eXKlO7AuLA5gpUCMjaqZf7XAdI/p+BT0QHrRZz0j6mpKQ06Dq2awkcll2hdqPzti2nL9Ge5jYFPCLyyd0YfuHn1XQz+1hiyQkGLPx0M3/PJGKtAMm67aT/CpXh5UAlpZaw5PO3nU5tIqvz8MdSW7AoDn584TROMCF6FvBCGFgiqokgnjLmeHYTgYdORLXhHV+s7NQfaHbxQccEZGvbvkeJBPYsJw8xHUwmIgygIV4O++nZpPJBaIcjJtgD1olu2wC7KQm+Wi/r5cTcwWMVimNqv0mLNxjhz/pkdbyd0b4D82r+KsE3aksFQ4Z3U1LwQPmjjHvFIkaN7ArXqFd1J5eA2zIRDsClEGSsd3/D8RPtUyir/Cn0FXPdWolhekfTv9zyXTXzTYyAZbUJYjcT0vC83O9i3Jngnj3MkTfeTEMdmQYlNXFb8V5Pd57nJsAbNO5603hhq4CgrPatrnMEhOmLOK/wk3xC7Iay7RVELHA5ZXLGV5Cug=
+    secure: XCpKoBUC2yW39qU3fhlA9dycb5JS+E+7xE5k9nQSdIEsScsxC574DU3EE4OYECkVq0vHIa7gRz39M80udlVDmtx3Q61v6QE7WO3jGxqlXuJUoM48l0sIbgv8bJzawCIT1GL1XD9qYCNLiWt9XESLAY1mKesNwU8BG3E/2miLnD6Yji6DnpcTvygZ6ftyVNzU/sMDIZPCXNpiRYvLOpmX0BUVie1GNGFvrQTLI422Qqb97dDKiZb04WQ31VZLNNliCl5SYpInvf/WP6V7MFDf1grVWfe3dPDeNoITeMILxJTVGa2MrlMVMK3q3TMfIGI0+k9wNOoG+l09IwjA1g8qCQS4sGmAEM+Izwt53hHAgqEYg69AOlN7hY6IUZjNo5xdZli3YpF9gdQ7DfJkryZOPln4xjPbo6KZDvsrPYly0YEU57+wY3pd6uAGoOG4XbDMmtzvYcZgTH+HayXvrHw1p0BOz7+b6vaV8MGqTcSNXVcjlbPZ+zy42APbyeD2ngCNcpdCK2/GtRNQEknysgeo3neYdN9KfGn36icSrvwR+qJbdS6A38idnNuDm1/lmwL0M+WRcQCwQy+mvKnT0Ik33xlUSee9qLrQV0Iy/6ugXgWvXBnmfIMLugLvAU2VBsP4r7PcZ1AZlvVTEkQE2KnzT9aMD9P4PnM7ozw0rR4Zdgk=
   on:
     tags: true
     repo: djanta/djantaio-tools-bump
@@ -46,26 +49,11 @@ after_deploy:
    - echo "==================================="
   - npm config ls -l
 
-notifications:
-  email: false
-  slack:
-    rooms:
-      - djantaio:1GeeSv1noSekK9to1yTqsbDw#tools
-    on_success: always
-    on_failure: always
-    template:
-      - Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository}@%{branch}
-        by %{author} %{result} in %{duration}
-  webhooks:
-    urls:
-      - "$GITTER_ROOM"
-    on_success: change
-    on_failure: always
-    on_start: never
 env:
   global:
-    secure: jp7D06Y+4XOLRNiCZRQbLB/6q6RyBztzEO0kLHyyw0hQ7s0s3mmPbWRGxfvGIh3xNDLnMuyx+YzrjdhGNLHFNne+ALWcM7HVRAoFwEdr/cXjoC3izUuHNrRWMnyeSIscecf+J/LGjIhqXpmWRmy7i+lt6D7833fayE211dXbfYpqOGhTzX3d/hxLoyo91EGoZDRSRTEU7U4RmklDMud/GWSpy3k0Qgrx2JE8n7hsknMXXMjVYAeykFcndC87bqa9g610mPCeL6MmNirgnU1lLRmn70OFi271N+BGeHLxz/fbGmEjQIIXODi7W8VzFb5rhdFBW98hXIpvQg4k+ZHdySofrg/p0N4SEs70E92szkT+sz0qEkP3a9eaKKFikN8UBLxQG96QNf0VpHHbXMySGulNyj7AOjFZKBxpMEC4YBI0IcLSkJLX0RkyeSjSwShsCrAF98NUdzQ6niYfhZp2Sgeu1ef1h2qQkSTWFLDsqwZCxNhUY8srOIGpOXII0BLcpo1HR08VQFT6CimcSxIVjIiMe0pHxlnmrko3+8y/QYmucArVTGFo60y6fSxrDz8Oj1+rjTFJmEcpbGdPEUBtfw7zhC1Ore8JrD6M2484ugMvA4NNKrzp5JTLlUcfSwYlQi9q/UGHizBmCLbQEySoxIAjwzIG4pkI0nKfLuU5oD4=
-    #Encrypted "GITTER_ROOM"
-    secure: jCgKzV8EI6t+f+ZgWaLlmflJk3lzt4BNmXWotta3euXxRM9l0IluoLTvgsbk7F2A3EhHuI7s9PR8USVWdg/1qGZ3ka+95s78nnywtVeMcr1dB8dGKP0irCXiN0MYJ+/isU/2LT3zoPo+Zca1qIlYBeF+fg5vK9zit2aYJHoxHz487EhRawZfofNzBJ6TI8cp2jriXEcNTXgLZSjvMcWvZVBbCl4iWIXtMv1JL/OVsQpZl27C2J4kW01VTDL7gOZ68gLaNMD2lkAMoFUazlq7a2qyJkBPgRiF/qw4PuBdPz3g57hZLIzm9DizNXv+zcrwDvrFsCW3L0FaLADJVtl8w0+xNz8dG+OYvHmp/gKOFMiuzTxsDGEIA/1feluj1KPozjjion7QF33okaocUIb5Zvpmp22dNDjvBeFbZYAoZZCnwoA4/HYP9e6NpSr8r7m3koqV4xoxTm7dugBrcLYiCnwrv7MB/VoOy12FlHpBP0x0rzN8whzCCZeLzHkZiNYX6GLLggbAKWmEIQCw09a4O/rAjTzRPXLtYD0Tip2ZICL+/CcEDmr45OdD3J4w6wRREE2p8/zP8jksVSL5KB0i0bCd1D2O9uMZUyIqUt/QSDKKtRBEyrnpX3YDQrDJT26uHLl19q+G5FNkyPtnJcviQR6JV9C9LmcxhAWgDzKC3mE=
     #Encrypted "NPM_EMAIL"
-    secure: FDwsaCgibUwtv43QiirABCT8cY08TXJjd25RUvRHRw/zS68BArTAanUcz3ut4qy8EAiOorp4xngJLmC+k7uajWnwdv5LEBUZmJHM+5Tcj4j3dB46Dyl9r5CCFedUeCdXwEj8GjqYT57WfqbMZHlJz0iPys12aPfJWmaDoN3njebbnvXfSufjcmQn0Wacy+s2lJQUx8xxKK4bqe/w1QSxpVCKdf/3HDW7KnbJo5cHMlhj/FYb9R9fgpy6Nc2lQ+4LRQM07oWvWy0nnJE1ExGDWkG/U2eHcphcfLp8dHclN9GTE1Va0BH9GxY0VE8qDZFYVmG6isKQtLR7ILV6ANUer9hW/s+h4sQu8JD0RuOr0B6rD3grYCaEHHADLbfv0tXBRK7fqK+e+sfHY6q28uEO5sRo0cZFapFBJU2bJQ/+CcuZ0PYguCD26o8D5iQSz+US4L22PSQlwlOUqlXNUbM4fdT2JG+5jkKPaIxtXVzsH78aE6Mc+L5qFYj/7Wr7z2aDjBEKN7f1d/2z0SGZN4Z5rtW5jaspkpbN7bLH99GfzsDLLzfvb0ne4fF4tZkvinaCB/fy/WcPQkjeN6w2GqqRIo//xgsgb71+ewA7kcEfcx1fSh7HRNLE1uiGGVI9bCoBTc8cibOksCXUIuoSKXlLEI3E4e27rPWP9AwVLlSN9fs=
+    secure: ae/Sdnp3p87xLQjI9Ltr9Guq9Mf+FF8UtEjQb04ezO6RGhXqnr4KSYjaNDaMhcl0kPrYVUKNm/2V95M42x+eDQ/6qFoGX1WQ7evSACqSLyI3G1d6MQwUw9BmENVpnAWxGJxmTR+ptBt/CVoBV3nuqV/EeqZcIrgd0U7fYddUAodylcqtB2FngsOAx0hgIQMkU61AN/rA6pz3QJQSnxozGtIoxLKIB6QF+RfMlBx4xMJlUTTiGvr+9Aa+OlcC0LLxYasNfYeZOpwJo7WQ8mh97ttyHJKR+ZJVKlkM7GtD+cl52BcUDsiEjNmewv6B6mflypVEdfCb8wTrGtrqVtfSHsyogwDNl9oZCJTAGZ2LWmKb+YOtIjgUwCxntTPTBxWZvhRhoQ6mPfhtkiv74SgCrQpOF2iHRVZHG+Fd9xinZ/C19GGxAOey0Uk3gSjTFTAvKZS5RczoKYn5a4ubzSfG5/xY1IHQzgDpaof8tVMeGcm6UFH5J0aPC3mODSPVtP3W1j64tG6TT97BYSO7cvs7hnuAa8S4/2yOJTAJYGJ3jmPgLBSSU9QbC2SIlcWVzqZEwXcvk9bprPRdypSGKqsFk5yFt4I3AmwKSGBPS+YLpY7ADNyBzPun7m/aBru7XYoHZhgWOXJK9Hl89Np2JsB3DLyNF1ttiGBg72TL7zt+XR8=
+    #Encrypted "NPM_USER"
+    secure: 4IndnB/kye/FG8GOZ8Yyuy/isAOj4duqv97HZIaNHH00fZr38lBc5Hj/8oZ9kl2NScv8RQR37aBVltrdZCU23Lkam8JOWJQQgAFYziubN/0BM4CHMiHP8puh5rcmlv6a7QmsipeASlZ8eDOQJ/76ou1cofipIDeza8YSNX1Mwp0qvlgGh2V3mebYKVIw0V8VxCp2V2wVXCjbcd/3r6tuvYA9qLxMPeR6UxAhZam4Figa1au5mo5iSYtWIkYuys3947/XjSRhR6F4taw9s6jJ4l+s2vy6TLzE7QPaKJbTlJdm5l+Pul2RuZ/MGt3P+HMfp5ipulCNX/uO10R3tfHZ6lOKpcxYuGD6W9MvbaXMVlvSF43IpEB4T/csN7LNkGhajFeoNG/dM1Trh29wbL9ZojtNDCg30O21vSTDnUCqMbKNTFJBazsmFg7rsAailyF9iD0kuukKo5gcPRag0Ka6wGLc1J5lmws7VMmdDldwNguTXESU3AhGUGIWG0v/bCxjchcNdYDHwVYj5Zh1QwsZ9/nXHf3eMJQwYUAYwFBrCMqZoJkh0OXiDDGt0VTSnSQVoUa1c25BamA5CsXcupBEqtlXpRgZurTTJuR9hBo80aAXXDZWmftQkSLwl5CUMc01cTzaXISaME86j7Xp5xvBmCnY39LwmvhMfTIX9dLWX3o=
+    #Encrypted "NPM_PWD"
+    secure: 9OkXIbCAU9RXG0OKsjHT9n+PWRuPQ/lpgOfU4ZcRdN9lccf8ZI4Ww1lM0XTZ90ch7K+SdDdKNQfzk7GSZxdsUShcE7QYZj3cMNGQPDyH8Fk7h4oYCsrz43RNmsmS2YqHiZ/Gcz7VgzwT2xC/3CC4mkfDmaif6nueSY4TqKuE9gBVx7M9MCQvj6xgVUF2FMaiFFz9jzY4/v75Ax5RvvygdOfRe4ieHjDEXYP47bm44DlgUHwpQ8GM6JrRpLTQVG0WmmUp685YvmvbD8Cb98WHvbGgj0btwKv+fUqU/NSXmPgx0wrcB3R0/7UOsVl7iBKP8PyB7besI+RSPAIbZdAu0Sz4/CNTnFRr+nI8t1gH3BNgi3yBB66YVx6rIg6olHY2dYCH0bV0nzG5W6OL1i72SgluFTtQO7sFmokmn4hPkeokhFOlGj79kWUKc2ActLSs2b+5m8d3IqaXyIRfudox+4G+VpkTh/n9Yr9Svqfe5NjFkFsss2i9QJLWESUyCybDd5Hj3a7n4TOJ8XuC0ZGuoapfjw/WhbmBXBhOlK4rwjwet2wmyI96bii2W2mp6B39a6E4RNp7pZlPPM9Ocf15X8zsUfuMpKX5E0xDznLoYwXAw4u/FAoW24yZogpZDvIgpUHzlsdHYXIiZixClss/354imdpknEFDVcNVnKOgX2U=
