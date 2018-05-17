@@ -29,6 +29,10 @@ after_success:
 
 before_deploy:
   - echo "Running before deploy step ..."
+  - echo "Email= $NPM_EMAIL"
+  - echo "User= $NPM_USER"
+  - echo "Password= $NPM_PWD"
+  - echo "===================================="
   - npm-cli-login -u $NPM_USER -p $NPM_PWD -e $NPM_EMAIL
 
 deploy:
