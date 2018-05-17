@@ -16,7 +16,6 @@ before_install:
   - git config credential.helper "store --file=.git/credentials"
   - echo "https://$GH_TOKEN:@github.com" > .git/credentials
   - npm i -g npm-cli-login
-  - npm-cli-login --help #Verify if the command has been installed
 
 install:
   - echo "Installing ..."
