@@ -2,31 +2,32 @@ sudo: false
 dist: trusty
 language: node_js
 node_js:
-- '7'
-- '6'
-- '5'
-- '4'
+  - '7'
+  - '6'
+  - '5'
+  - '4'
 before_install:
   - git config user.name "$GH_USER"
   - git config user.email "$GH_USER_EMAIL"
   - git config credential.helper "store --file=.git/credentials"
   - echo "https://$GH_TOKEN:@github.com" > .git/credentials
-  #- npm i -g npm-cli-login
 install:
   - echo "Installing ..."
+  - bash ./install.sh
 script:
   - echo "Npm deploy email= $NPM_EMAIL"
   - echo "No npm test needed!"
 after_success:
   - echo "Running after success step ..."
+  - expect -f npm/login.sh $NPM_USER $NPM_PWD $NPM_EMAIL
 before_deploy:
   - echo "Running before deploy step ..."
   #- npm-cli-login -u $NPM_USER -p $NPM_PWD -e $NPM_EMAIL
-  - echo "registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+  #- echo "registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
   - cat ~/.npmrc
   - npm config ls -l
   - echo "============================================="
-  - npm config ls -l
+  - npm config ls -g
 deploy:
   provider: npm
   skip_cleanup: true
@@ -38,6 +39,7 @@ deploy:
     repo: djantaio/travisci-npm-deploy
 after_deploy:
   - echo "Running after deploy step ..."
+  - npm logout
 env:
   global:
   - secure: 0P6fFHMISpAHYWQ34nIf/uRgyQWqhXMpHS7F7M/hGKwRv1lZ7euMQNmgIhMPEAyiJmSlTfvk8EzE3PfY5Qza5CLZuc5/9onngMsWbi86Ui/1JB/01hA6xzcP5ZG8kpgXfzul4yEmhZob6I7FoDvTCHIPT+Twc1oSgNIsj0BliPUwdOT6x9H3g6MQCTJ+4JdR8rSnNPZhOZvh4+K9WEpjJpNh/LiCAAybJZ07k+8qVTSKe9lZDDHtPhlCgm9co5VcQXObxXuv9TcN5fCw7TNRBwP6NifG8/uxjY1aG0mm7ICytvypNGm8rDTy+vRddOM+0QEv6gCWNJtRafqCdcDhwOvq/TpVlvNc8S6TkCZ6a6TrKPeD5InuEgyjdmTjfxFWJAOP4o/N7V50Y0sUrk2tsC8dKxA0FslnE6ffNlLAAt3723lB8kegxE4yTjapvxBnJh1Hj/9QN1W3/bO/i/VuxazOX+0uSIT+/KH4eNiC8j1WnoqT1n32Mix+VsO4HJIabs8/y8hGxLLBMZDA73qzw0nhPQ37M+lkc6EvfopvZBbSQ1q+7H8Obg9IVf5i/zf/HjLsvDINoZRD9B6qdj2rKRRDLBstnfHlAzkPMIHalpm7VVoCMNdofkv3bMZ4f8k5sZqBboI4HB8/aIvJQtsxvvu8I4N3nucPxBAfuWGaHDM=
