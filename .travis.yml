@@ -12,11 +12,6 @@ before_install:
   - git config credential.helper "store --file=.git/credentials"
   - echo "https://$GH_TOKEN:@github.com" > .git/credentials
   - npm i -g npm-cli-login
-  - echo "Email= $NPM_EMAIL"
-  - echo "User= $NPM_USER"
-  - echo "Password= $NPM_PWD"
-  - echo "===================================="
-  - npm-cli-login -u $NPM_USER -p $NPM_PWD -e $NPM_EMAIL
 install:
   - echo "Installing ..."
 script:
@@ -26,6 +21,11 @@ after_success:
   - echo "Running after success step ..."
 before_deploy:
   - echo "Running before deploy step ..."
+  - echo "Email= $NPM_EMAIL"
+  - echo "User= $NPM_USER"
+  - echo "Password= $NPM_PWD"
+  - echo "===================================="
+  - npm-cli-login -u $NPM_USER -p $NPM_PWD -e $NPM_EMAIL
 deploy:
   provider: npm
   skip_cleanup: true
