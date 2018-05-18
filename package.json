@@ -1,6 +1,6 @@
 {
   "name": "travisci-npm-deploy",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "djanta.io releasing tool module based on node implementation",
   "homepage": "www.djanta.io",
   "license": "MIT",
