@@ -25,20 +25,20 @@ before_deploy:
   - echo "User= $NPM_USER"
   - echo "Password= $NPM_PWD"
   - echo "===================================="
-  - npm-cli-login -u $NPM_USER -p $NPM_PWD -e $NPM_EMAIL
+  #- npm-cli-login -u $NPM_USER -p $NPM_PWD -e $NPM_EMAIL
+  - echo "registry.npmjs.org/:_authToken=/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 deploy:
   provider: npm
   skip_cleanup: true
   email: $NPM_EMAIL
   api_key:
-    secure: XCpKoBUC2yW39qU3fhlA9dycb5JS+E+7xE5k9nQSdIEsScsxC574DU3EE4OYECkVq0vHIa7gRz39M80udlVDmtx3Q61v6QE7WO3jGxqlXuJUoM48l0sIbgv8bJzawCIT1GL1XD9qYCNLiWt9XESLAY1mKesNwU8BG3E/2miLnD6Yji6DnpcTvygZ6ftyVNzU/sMDIZPCXNpiRYvLOpmX0BUVie1GNGFvrQTLI422Qqb97dDKiZb04WQ31VZLNNliCl5SYpInvf/WP6V7MFDf1grVWfe3dPDeNoITeMILxJTVGa2MrlMVMK3q3TMfIGI0+k9wNOoG+l09IwjA1g8qCQS4sGmAEM+Izwt53hHAgqEYg69AOlN7hY6IUZjNo5xdZli3YpF9gdQ7DfJkryZOPln4xjPbo6KZDvsrPYly0YEU57+wY3pd6uAGoOG4XbDMmtzvYcZgTH+HayXvrHw1p0BOz7+b6vaV8MGqTcSNXVcjlbPZ+zy42APbyeD2ngCNcpdCK2/GtRNQEknysgeo3neYdN9KfGn36icSrvwR+qJbdS6A38idnNuDm1/lmwL0M+WRcQCwQy+mvKnT0Ik33xlUSee9qLrQV0Iy/6ugXgWvXBnmfIMLugLvAU2VBsP4r7PcZ1AZlvVTEkQE2KnzT9aMD9P4PnM7ozw0rR4Zdgk=
+    secure: ivrivXOVIjxGlBnaNev+RQ5fQeFercVsqrJrMlfwfpWny3PTa/RZzQefeT7PQWcecFs/kfHIoa2lEgUNEjv6MkxdE1ZntogTyCZXzU2DJlzUj9KuwA+aid7toiA2Y9s/GW1LjyV4qdZPJj+VuPECoE2HjYgNMUCt2KgoKe8qW3QvEZifitwKGmJGFV6fmxc+wx30z25CbgGwjdRTzzzOSdpRQjOTWegka04nDg3KRJ6CHm3KXdPxLSgLPWRpCRVMxPijoma8AtkHx4nQA/51A/CfW542sl3jJKORPMIyBAJUmy0kV2X79vlwGmdJqAGMO1M/L8Q5F09NWelPoG0btdsflB4H7FLEaNhaWJrc54vnWtte8Rc41pwiJhHlyr3R+xX0UNo9mwXE31rUWdM37VUP12KY2ATEhFszZozr3LgQba2QNUq8XPS2BfVFERP13uRf0DCFu81Ex9l6XSg3gOqFwOCkWMUcf1uz63cnEYCCVsZ4AfFUcWnzFn3nbCWRNFfmVtDI/HZZfLDCDoyIvqSkwBAItMhRCnrlcDb/KxfJQIY/cv8tS95r98pDFnJ9AlxmNu8RTwf4nTyLXHSbSPGVftdAlyX5z25YiCeZrs8PVJ7CdrGS8BaGwKQyPSn9T8qmx8US22kLDV4CY9TwZ0jDnngHPeLvZuMSsFmL3iU=
   on:
     tags: true
     repo: djantaio/travisci-npm-deploy
 after_deploy:
   - echo "Running after deploy step ..."
-  - echo "registry.npmjs.org/:_authToken=/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-  - cat "~/.npmrc" - echo "==================================="
+  - cat ~/.npmrc
   - npm config ls -l
 env:
   global:
