@@ -25,6 +25,8 @@ before_deploy:
   - echo "registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
   - cat ~/.npmrc
   - npm config ls -l
+  - echo "============================================="
+  - npm config ls -l
 deploy:
   provider: npm
   skip_cleanup: true
