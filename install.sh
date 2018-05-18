@@ -2,5 +2,5 @@
 
 set -ev # exit with nonzero exit code if anything fails
 
-apt-get install expect
+sudo apt-get install expect
 
