@@ -26,7 +26,7 @@ deploy:
   provider: npm
   skip_cleanup: true
   email: "$NPM_EMAIL"
-  api_key: "$NPM_TOKEN"
+  #api_key: "$NPM_TOKEN"
   on:
     tags: true
     repo: djantaio/travisci-npm-deploy
