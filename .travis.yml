@@ -19,10 +19,9 @@ script:
   - echo "No npm test needed!"
 after_success:
   - echo "Running after success step ..."
-  - expect -f npm/login.sh $NPM_USER $NPM_PWD $NPM_EMAIL
-  - npm logout
 before_deploy:
   - echo "Running before deploy step ..."
+  - expect -f npm/login.sh $NPM_USER $NPM_PWD $NPM_EMAIL
 deploy:
   provider: npm
   skip_cleanup: true
