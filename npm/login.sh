@@ -1,12 +1,16 @@
 #!/usr/bin/expect -f
 
+#set -ex
+
 # set our args into variables
-set i 0; foreach n $argv {set "p[incr i]" $n}
+set i 0;
+
+foreach n $argv {set "p[incr i]" $n}
 
 set timeout 60
 
 #npm login command, add whatever command-line args are necessary
-spawn npm login --verbose
+spawn npm login
 match_max 100000
 
 expect "Username"
