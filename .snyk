@@ -1,0 +1,64 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.22.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:extend:20180424':
+    - changelog > request > extend:
+        patched: '2022-01-13T13:40:25.783Z'
+  SNYK-JS-LODASH-567746:
+    - changelog > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - eslint > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - eslint > inquirer > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - eslint > table > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - grunt > grunt-legacy-log > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - standard > eslint > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - nyc > istanbul-lib-instrument > babel-types > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - nyc > istanbul-lib-instrument > babel-generator > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - nyc > istanbul-lib-instrument > babel-traverse > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - nyc > istanbul-lib-instrument > babel-template > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - standard > eslint > inquirer > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - standard > eslint > table > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - nyc > istanbul-lib-instrument > babel-generator > babel-types > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - nyc > istanbul-lib-instrument > babel-traverse > babel-types > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - nyc > istanbul-lib-instrument > babel-template > babel-types > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - nyc > istanbul-lib-instrument > babel-template > babel-traverse > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - nyc > istanbul-lib-instrument > babel-template > babel-traverse > babel-types > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+  'npm:lodash:20180130':
+    - verb > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - verb > async-helper-base > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - verb > engine-lodash > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - verb > js-comments > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - verb > composer > bach > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - verb > js-comments > parse-comments > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - verb > template-helper-apidocs > js-comments > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - verb > template > load-templates > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - verb > template-helper-apidocs > js-comments > parse-comments > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
+    - verb > template > template-utils > load-templates > lodash:
+        patched: '2022-01-13T13:40:25.783Z'
